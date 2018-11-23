@@ -10,7 +10,16 @@
 
 @implementation FSDraw
 
++ (NSArray<CALayer *> *)fs_drawColorForLayer:(nonnull CALayer *)view
+                                    sections:(NSInteger)sections
+                                   direction:(FSDrawDirection)direction
+                                       color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                       ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
+    return [self drawColorForLayer:view hasAddedAndReuseLayers:nil sections:sections direction:direction color:configColor ratio:configRatio];
+}
+
 + (NSArray<CALayer *> *)drawColorForLayer:(nonnull CALayer *)view
+                   hasAddedAndReuseLayers:(nullable NSArray<CAShapeLayer *> *)priorities
                                  sections:(NSInteger)sections
                                 direction:(FSDrawDirection)direction
                                     color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
@@ -40,11 +49,23 @@
         [path addLineToPoint:CGPointMake(view.bounds.size.width, view.bounds.size.height / 2)];
     }
     
-    NSMutableArray  *layers = [[NSMutableArray alloc] init];
+    NSMutableArray  *layers = nil;
+    if ([priorities isKindOfClass:NSArray.class] && priorities.count) {
+        layers = [[NSMutableArray alloc] initWithArray:priorities];
+    }else{
+        layers = [[NSMutableArray alloc] init];
+    }
+    
+    NSInteger countOfPriorities = priorities.count;
     CGFloat offset = 0;
     NSInteger theLast = sections - 1;
     for (int x = 0; x < sections; x ++) {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CAShapeLayer *shapeLayer = nil;
+        if (x < countOfPriorities) {
+            shapeLayer = priorities[x];
+        }else{
+            shapeLayer = [CAShapeLayer layer];
+        }
         shapeLayer.path = path.CGPath;
         if (direction == FSDrawDirection_UpToBottom) {
             shapeLayer.lineWidth = view.bounds.size.width;
@@ -62,8 +83,10 @@
             shapeLayer.strokeStart = offset;
             shapeLayer.strokeEnd = offset + ratio;
         }
-        [view addSublayer:shapeLayer];
-        [layers addObject:shapeLayer];
+        if (![view.sublayers containsObject:shapeLayer]) {
+            [view addSublayer:shapeLayer];
+            [layers addObject:shapeLayer];
+        }
         
         offset = shapeLayer.strokeEnd;
         if (offset >= 1) {
@@ -74,7 +97,7 @@
     return [layers copy];
 }
 
-+ (void)removeAllColorsWithSubLayers:(NSArray<CALayer *> *)layers{
++ (void)removeAllColorsWithSubLayers:(NSArray<CAShapeLayer *> *)layers{
     if ([layers isKindOfClass:NSArray.class] && layers.count) {
         for (CALayer *subLayer in layers) {
             [subLayer removeFromSuperlayer];

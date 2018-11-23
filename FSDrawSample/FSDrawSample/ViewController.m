@@ -23,7 +23,7 @@
         view.backgroundColor = UIColor.brownColor;
         [self.view addSubview:view];
         
-        NSArray *layers = [FSDraw drawColorForLayer:view.layer sections:2 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
+        NSArray *layers = [FSDraw fs_drawColorForLayer:view.layer sections:2 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
             if (sectionIndex == 0) {
                 return UIColor.redColor;
             }else if (sectionIndex == 1){
@@ -36,12 +36,31 @@
         }];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            for (CAShapeLayer *layer in layers) {
-                layer.strokeColor = UIColor.cyanColor.CGColor;
-            }
+            NSArray *values = [FSDraw drawColorForLayer:view.layer hasAddedAndReuseLayers:layers sections:4 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
+                if (sectionIndex == 0) {
+                    return UIColor.redColor;
+                }else if (sectionIndex == 1){
+                    return UIColor.blackColor;
+                }else if (sectionIndex == 2){
+                    return UIColor.greenColor;
+                }else{
+                    return UIColor.yellowColor;
+                }
+            } ratio:^CGFloat(NSInteger sectionIndex) {
+                if (sectionIndex == 0) {
+                    return 0.2;
+                }else if (sectionIndex == 1){
+                    return 0.3;
+                }else if (sectionIndex == 2){
+                    return 0.1;
+                }else{
+                    return 0.4;
+                }
+            }];
+            
+            NSLog(@"values:%@",values);
         });
     }
-    
 }
 
 

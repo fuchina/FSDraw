@@ -27,13 +27,20 @@ typedef NS_OPTIONS(NSUInteger, FSDrawDirection) {
  
  返回添加的用来显示颜色的subLayer数组，这个数组可以用于removeAllColorsWithSubLayers：入参。
  */
-+ (NSArray<CALayer *> *)drawColorForLayer:(nonnull CALayer *)layer
-                                 sections:(NSInteger)sections
-                                direction:(FSDrawDirection)direction
-                                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
++ (NSArray<CALayer *> *)fs_drawColorForLayer:(nonnull CALayer *)layer
+                                    sections:(NSInteger)sections
+                                   direction:(FSDrawDirection)direction
+                                       color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                       ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
 
-+ (void)removeAllColorsWithSubLayers:(NSArray<CALayer *> *)layers;
++ (NSArray<CAShapeLayer *> *)drawColorForLayer:(nonnull CALayer *)layer
+                        hasAddedAndReuseLayers:(nullable NSArray<CAShapeLayer *> *)priorities
+                                      sections:(NSInteger)sections
+                                     direction:(FSDrawDirection)direction
+                                         color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                         ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
+
++ (void)removeAllColorsWithSubLayers:(NSArray<CAShapeLayer *> *)layers;
 
 @end
 
