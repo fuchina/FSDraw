@@ -24,6 +24,9 @@
     if (!configRatio) {
         return;
     }
+    if (sections<= 0) {
+        return;
+    }
 
     /*
      贝塞尔曲线正好是视图的中间，所画的线才不会歪或显示在区域外
@@ -38,6 +41,7 @@
     }
     
     CGFloat offset = 0;
+    NSInteger theLast = sections - 1;
     for (int x = 0; x < sections; x ++) {
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         shapeLayer.path = path.CGPath;
@@ -49,12 +53,20 @@
         UIColor *color = configColor(x);
         shapeLayer.strokeColor = color.CGColor;
         
-        CGFloat ratio = configRatio(x);
-        shapeLayer.strokeStart = offset;
-        shapeLayer.strokeEnd = offset + ratio;
+        if (x == theLast) {
+            shapeLayer.strokeStart = offset;
+            shapeLayer.strokeEnd = 1;
+        }else{
+            CGFloat ratio = configRatio(x);
+            shapeLayer.strokeStart = offset;
+            shapeLayer.strokeEnd = offset + ratio;
+        }
         [view addSublayer:shapeLayer];
         
         offset = shapeLayer.strokeEnd;
+        if (offset >= 1) {
+            return;
+        }
     }
     [path closePath];
 }

@@ -17,8 +17,15 @@ typedef NS_OPTIONS(NSUInteger, FSDrawDirection) {
 
 @interface FSDraw : NSObject
 
-// 让视图显示分段的各种颜色
-+ (void)drawColorForLayer:(nonnull CALayer *)view
+/*
+  让视图显示分段的各种颜色
+ layer：视图UIView的layer；
+ sections：段数，分几段，必须大于0；
+ direction：颜色绘制方向，从上往下绘制或从左往右绘制
+ configColor：根据sectionIndex（每一段）配置颜色值
+ configRatio：根据sectionIndex（每一段）配置比例（占视图的比例）,总比例要等于1.
+ */
++ (void)drawColorForLayer:(nonnull CALayer *)layer
                  sections:(NSInteger)sections
                 direction:(FSDrawDirection)direction
                     color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
