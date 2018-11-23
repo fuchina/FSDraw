@@ -24,12 +24,16 @@ typedef NS_OPTIONS(NSUInteger, FSDrawDirection) {
  direction：颜色绘制方向，从上往下绘制或从左往右绘制
  configColor：根据sectionIndex（每一段）配置颜色值
  configRatio：根据sectionIndex（每一段）配置比例（占视图的比例）,总比例等于1.
+ 
+ 返回添加的用来显示颜色的subLayer数组，这个数组可以用于removeAllColorsWithSubLayers：入参。
  */
-+ (void)drawColorForLayer:(nonnull CALayer *)layer
-                 sections:(NSInteger)sections
-                direction:(FSDrawDirection)direction
-                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
++ (NSArray<CALayer *> *)drawColorForLayer:(nonnull CALayer *)layer
+                                 sections:(NSInteger)sections
+                                direction:(FSDrawDirection)direction
+                                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
+
++ (void)removeAllColorsWithSubLayers:(NSArray<CALayer *> *)layers;
 
 @end
 

@@ -10,22 +10,22 @@
 
 @implementation FSDraw
 
-+ (void)drawColorForLayer:(nonnull CALayer *)view
-                 sections:(NSInteger)sections
-                direction:(FSDrawDirection)direction
-                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
++ (NSArray<CALayer *> *)drawColorForLayer:(nonnull CALayer *)view
+                                 sections:(NSInteger)sections
+                                direction:(FSDrawDirection)direction
+                                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
     if (![view isKindOfClass:CALayer.class]) {
-        return;
+        return nil;
     }
     if (!configColor) {
-        return;
+        return nil;
     }
     if (!configRatio) {
-        return;
+        return nil;
     }
     if (sections<= 0) {
-        return;
+        return nil;
     }
 
     /*
@@ -40,6 +40,7 @@
         [path addLineToPoint:CGPointMake(view.bounds.size.width, view.bounds.size.height / 2)];
     }
     
+    NSMutableArray  *layers = [[NSMutableArray alloc] init];
     CGFloat offset = 0;
     NSInteger theLast = sections - 1;
     for (int x = 0; x < sections; x ++) {
@@ -62,13 +63,23 @@
             shapeLayer.strokeEnd = offset + ratio;
         }
         [view addSublayer:shapeLayer];
+        [layers addObject:shapeLayer];
         
         offset = shapeLayer.strokeEnd;
         if (offset >= 1) {
-            return;
+            return layers;
         }
     }
     [path closePath];
+    return [layers copy];
+}
+
++ (void)removeAllColorsWithSubLayers:(NSArray<CALayer *> *)layers{
+    if ([layers isKindOfClass:NSArray.class] && layers.count) {
+        for (CALayer *subLayer in layers) {
+            [subLayer removeFromSuperlayer];
+        }
+    }
 }
 
 @end

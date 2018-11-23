@@ -23,7 +23,7 @@
         view.backgroundColor = UIColor.brownColor;
         [self.view addSubview:view];
         
-        [FSDraw drawColorForLayer:view.layer sections:2 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
+        NSArray *layers = [FSDraw drawColorForLayer:view.layer sections:2 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
             if (sectionIndex == 0) {
                 return UIColor.redColor;
             }else if (sectionIndex == 1){
@@ -34,6 +34,12 @@
         } ratio:^CGFloat(NSInteger sectionIndex) {
             return 0.3;
         }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            for (CAShapeLayer *layer in layers) {
+                layer.strokeColor = UIColor.cyanColor.CGColor;
+            }
+        });
     }
     
 }
