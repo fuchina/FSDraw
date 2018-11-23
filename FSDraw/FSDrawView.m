@@ -10,11 +10,13 @@
 
 @implementation FSDrawView
 
-- (void)drawColorForLayer:(nonnull CALayer *)layer
-                 sections:(NSInteger)sections
-                direction:(FSDrawDirection)direction
-                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
+- (void)drawColorWithSections:(NSInteger)sections
+                    direction:(FSDrawDirection)direction
+                        color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                        ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
+    
+    NSArray *layers = [FSDraw drawColorForLayer:self.layer sections:sections direction:direction color:configColor ratio:configRatio];
+    
 }
 
 - (void)removeAllColors{

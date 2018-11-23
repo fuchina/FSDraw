@@ -25,11 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
  
  返回添加的用来显示颜色的subLayer数组，这个数组可以用于removeAllColorsWithSubLayers：入参。
  */
-- (void)drawColorForLayer:(nonnull CALayer *)layer
-                 sections:(NSInteger)sections
-                direction:(FSDrawDirection)direction
-                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
+- (void)drawColorWithSections:(NSInteger)sections
+                    direction:(FSDrawDirection)direction
+                        color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                        ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
 
 - (void)removeAllColors;
 
