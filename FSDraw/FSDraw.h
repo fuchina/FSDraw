@@ -35,7 +35,7 @@ typedef NS_OPTIONS(NSUInteger, FSDrawDirection) {
 
 /*
  @param
- priorities:已经添加并显示的CAShapeLayer数组，用于复用
+ priorities:已经添加并显示的CAShapeLayer数组，用于复用,数据来源于该View上一次执行这方法时的返回值，如果View没有添加其他的layer，直接用view.layer.subLayers也可以
  */
 + (NSArray<CAShapeLayer *> *)drawColorForLayer:(nonnull CALayer *)layer
                         hasAddedAndReuseLayers:(nullable NSArray<CAShapeLayer *> *)priorities

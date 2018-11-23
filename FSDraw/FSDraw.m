@@ -63,6 +63,7 @@
         CAShapeLayer *shapeLayer = nil;
         if (x < countOfPriorities) {
             shapeLayer = priorities[x];
+            NSAssert([shapeLayer isKindOfClass:CAShapeLayer.class] == YES, @"shapeLayer必须是CAShapeLayer类");
         }else{
             shapeLayer = [CAShapeLayer layer];
         }
