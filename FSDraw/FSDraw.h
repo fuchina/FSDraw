@@ -23,7 +23,7 @@ typedef NS_OPTIONS(NSUInteger, FSDrawDirection) {
  sections：段数，分几段，必须大于0；
  direction：颜色绘制方向，从上往下绘制或从左往右绘制
  configColor：根据sectionIndex（每一段）配置颜色值
- configRatio：根据sectionIndex（每一段）配置比例（占视图的比例）,总比例要等于1.
+ configRatio：根据sectionIndex（每一段）配置比例（占视图的比例）,总比例等于1.
  */
 + (void)drawColorForLayer:(nonnull CALayer *)layer
                  sections:(NSInteger)sections
