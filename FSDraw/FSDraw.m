@@ -10,128 +10,54 @@
 
 @implementation FSDraw
 
-+ (void)drawColorForView:(UIView *)view colors:(NSArray<UIColor *> *)colors sections:(NSArray<NSNumber *> *)secitons direction:(FSDrawDirection)direction{
-    if (!([colors isKindOfClass:NSArray.class] && colors.count)) {
-        return;
-    }
-    if (!([secitons isKindOfClass:NSArray.class] && secitons.count)) {
-        return;
-    }
-    if (secitons.count != colors.count) {
-        return;
-    }
++ (void)drawColorForView:(nonnull UIView *)view
+                sections:(NSInteger)sections
+               direction:(FSDrawDirection)direction
+                   color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                   ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
     if (![view isKindOfClass:UIView.class]) {
         return;
     }
-    
+    if (!configColor) {
+        return;
+    }
+    if (!configRatio) {
+        return;
+    }
+
+    /*
+     贝塞尔曲线正好是视图的中间，所画的线才不会歪或显示在区域外
+     */
     UIBezierPath *path = [UIBezierPath bezierPath];
     if (direction == FSDrawDirection_UpToBottom) {
-        [path moveToPoint:CGPointMake(0, view.bounds.size.height / 2)];
-        [path addLineToPoint:CGPointMake(view.bounds.size.width, view.bounds.size.height / 2)];
+        [path moveToPoint:CGPointMake(view.bounds.size.width / 2, 0)];
+        [path addLineToPoint:CGPointMake(view.bounds.size.width / 2, view.bounds.size.height)];
     }else if (direction == FSDrawDirection_LeftToRight){
         [path moveToPoint:CGPointMake(0, view.bounds.size.height / 2)];
         [path addLineToPoint:CGPointMake(view.bounds.size.width, view.bounds.size.height / 2)];
     }
     
-    __block float a = 0;
-    __block NSInteger index = 0;
-    [secitons enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    CGFloat offset = 0;
+    for (int x = 0; x < sections; x ++) {
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         shapeLayer.path = path.CGPath;
-        shapeLayer.lineWidth = view.bounds.size.height;
-        shapeLayer.strokeColor = colors[index].CGColor;
+        if (direction == FSDrawDirection_UpToBottom) {
+            shapeLayer.lineWidth = view.bounds.size.width;
+        }else if (direction == FSDrawDirection_LeftToRight){
+            shapeLayer.lineWidth = view.bounds.size.height;
+        }
+        UIColor *color = configColor(x);
+        shapeLayer.strokeColor = color.CGColor;
         
-        CGFloat number = [secitons[index] floatValue];
-        shapeLayer.strokeStart = a;
-        shapeLayer.strokeEnd = a + number;
+        CGFloat ratio = configRatio(x);
+        shapeLayer.strokeStart = offset;
+        shapeLayer.strokeEnd = offset + ratio;
         [view.layer addSublayer:shapeLayer];
         
-        a = shapeLayer.strokeEnd;
-        index ++;
-    }];
-    
+        offset = shapeLayer.strokeEnd;
+    }
     [path closePath];
 }
 
-+ (void)drawColorForView:(UIView *)view colors:(NSArray<UIColor *> *)colors sections:(NSArray<NSNumber *> *)secitons{
-    [self drawColorForViewB:view colors:colors sections:secitons];
-}
-
-+ (void)drawColorForViewA:(UIView *)view colors:(NSArray<UIColor *> *)colors sections:(NSArray<NSNumber *> *)secitons{
-    if (!([colors isKindOfClass:NSArray.class] && colors.count)) {
-        return;
-    }
-    if (!([secitons isKindOfClass:NSArray.class] && secitons.count)) {
-        return;
-    }
-    if (secitons.count != colors.count) {
-        return;
-    }
-    if (![view isKindOfClass:UIView.class]) {
-        return;
-    }
-    
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(0, view.bounds.size.height / 2)];
-    [path addLineToPoint:CGPointMake(view.bounds.size.width, view.bounds.size.height / 2)];
-
-    
-    __block float a = 0;
-    __block NSInteger index = 0;
-    [secitons enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        shapeLayer.path = path.CGPath;
-        shapeLayer.lineWidth = view.bounds.size.height;
-        shapeLayer.strokeColor = colors[index].CGColor;
-
-        CGFloat number = [secitons[index] floatValue];
-        shapeLayer.strokeStart = a;
-        shapeLayer.strokeEnd = a + number;
-        [view.layer addSublayer:shapeLayer];
-
-        a = shapeLayer.strokeEnd;
-        index ++;
-    }];
-    
-    [path closePath];
-}
-
-+ (void)drawColorForViewB:(UIView *)view colors:(NSArray<UIColor *> *)colors sections:(NSArray<NSNumber *> *)secitons{
-    if (!([colors isKindOfClass:NSArray.class] && colors.count)) {
-        return;
-    }
-    if (!([secitons isKindOfClass:NSArray.class] && secitons.count)) {
-        return;
-    }
-    if (secitons.count != colors.count) {
-        return;
-    }
-    if (![view isKindOfClass:UIView.class]) {
-        return;
-    }
-    
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(view.bounds.size.width / 2, 0)];
-    [path addLineToPoint:CGPointMake(view.bounds.size.width / 2, view.bounds.size.height)];
-    
-    __block float a = 0;
-    __block NSInteger index = 0;
-    [secitons enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        shapeLayer.path = path.CGPath;
-        shapeLayer.lineWidth = view.bounds.size.width;
-        shapeLayer.strokeColor = colors[index].CGColor;
-        
-        CGFloat number = [secitons[index] floatValue];
-        shapeLayer.strokeStart = a;
-        shapeLayer.strokeEnd = a + number;
-        [view.layer addSublayer:shapeLayer];
-        
-        a = shapeLayer.strokeEnd;
-        index ++;
-    }];
-    
-    [path closePath];
-}
 
 @end
