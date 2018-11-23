@@ -10,20 +10,20 @@
 
 @implementation FSDraw
 
-+ (NSArray<CALayer *> *)fs_drawColorForLayer:(nonnull CALayer *)view
-                                    sections:(NSInteger)sections
-                                   direction:(FSDrawDirection)direction
-                                       color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                                       ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
++ (NSArray<CAShapeLayer *> *)fs_drawColorForLayer:(nonnull CALayer *)view
+                                         sections:(NSInteger)sections
+                                        direction:(FSDrawDirection)direction
+                                            color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                            ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
     return [self drawColorForLayer:view hasAddedAndReuseLayers:nil sections:sections direction:direction color:configColor ratio:configRatio];
 }
 
-+ (NSArray<CALayer *> *)drawColorForLayer:(nonnull CALayer *)view
-                   hasAddedAndReuseLayers:(nullable NSArray<CAShapeLayer *> *)priorities
-                                 sections:(NSInteger)sections
-                                direction:(FSDrawDirection)direction
-                                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
++ (NSArray<CAShapeLayer *> *)drawColorForLayer:(nonnull CALayer *)view
+                        hasAddedAndReuseLayers:(nullable NSArray<CAShapeLayer *> *)priorities
+                                      sections:(NSInteger)sections
+                                     direction:(FSDrawDirection)direction
+                                         color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                                         ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
     if (![view isKindOfClass:CALayer.class]) {
         return nil;
     }
@@ -90,10 +90,30 @@
         
         offset = shapeLayer.strokeEnd;
         if (offset >= 1) {
-            return layers;
+            break;
         }
     }
     [path closePath];
+    
+#if DEBUG
+    
+    // 校验数组是否正确
+    BOOL sameCount = layers.count == view.sublayers.count;
+    NSAssert(sameCount == YES, @"layers数组的count应该跟view.sublayers.count相同");
+
+    // 互相包含
+    for (int x = 0; x < layers.count; x ++) {
+        CAShapeLayer *llayer = layers[x];
+        CAShapeLayer *slayer = view.sublayers[x];
+        
+        BOOL aCheck = [layers containsObject:slayer];
+        BOOL bCheck = [view.sublayers containsObject:llayer];
+        NSAssert(aCheck == YES, @"layers必须包含view.sublayers中的元素");
+        NSAssert(bCheck == YES, @"view.sublayer必须包行layes中的元素");
+    }
+    
+#endif
+    
     return [layers copy];
 }
 

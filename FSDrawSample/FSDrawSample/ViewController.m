@@ -58,7 +58,8 @@
                 }
             }];
             
-            NSLog(@"values:%@",values);
+            NSArray *addeds = view.layer.sublayers;
+            NSLog(@"values:%@,\n%@",values,addeds);
         });
     }
 }
