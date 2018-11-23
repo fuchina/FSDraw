@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "FSDraw.h"
 
 @interface ViewController ()
 
@@ -16,7 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 20, 200)];
+    view.backgroundColor = UIColor.brownColor;
+    [self.view addSubview:view];
+    
+    [FSDraw drawColorForView:view colors:@[UIColor.redColor,UIColor.greenColor,UIColor.blackColor] sections:@[@0.5,@0.25,@0.25]];
 }
 
 

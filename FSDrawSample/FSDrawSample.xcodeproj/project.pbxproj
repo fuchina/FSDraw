@@ -13,6 +13,7 @@
 		2D4134FD21A7A11100DC99BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D4134FC21A7A11100DC99BD /* Assets.xcassets */; };
 		2D41350021A7A11100DC99BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D4134FE21A7A11100DC99BD /* LaunchScreen.storyboard */; };
 		2D41350321A7A11100DC99BD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D41350221A7A11100DC99BD /* main.m */; };
+		2D41350C21A7A17A00DC99BD /* FSDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D41350B21A7A17A00DC99BD /* FSDraw.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		2D4134FF21A7A11100DC99BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2D41350121A7A11100DC99BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D41350221A7A11100DC99BD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2D41350A21A7A17A00DC99BD /* FSDraw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSDraw.h; sourceTree = "<group>"; };
+		2D41350B21A7A17A00DC99BD /* FSDraw.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSDraw.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		2D4134F221A7A11000DC99BD /* FSDrawSample */ = {
 			isa = PBXGroup;
 			children = (
+				2D41350921A7A17200DC99BD /* FSDraw */,
 				2D4134F321A7A11000DC99BD /* AppDelegate.h */,
 				2D4134F421A7A11000DC99BD /* AppDelegate.m */,
 				2D4134F621A7A11000DC99BD /* ViewController.h */,
@@ -69,6 +73,16 @@
 				2D41350221A7A11100DC99BD /* main.m */,
 			);
 			path = FSDrawSample;
+			sourceTree = "<group>";
+		};
+		2D41350921A7A17200DC99BD /* FSDraw */ = {
+			isa = PBXGroup;
+			children = (
+				2D41350A21A7A17A00DC99BD /* FSDraw.h */,
+				2D41350B21A7A17A00DC99BD /* FSDraw.m */,
+			);
+			name = FSDraw;
+			path = ../../FSDraw;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +157,7 @@
 			files = (
 				2D4134F821A7A11000DC99BD /* ViewController.m in Sources */,
 				2D41350321A7A11100DC99BD /* main.m in Sources */,
+				2D41350C21A7A17A00DC99BD /* FSDraw.m in Sources */,
 				2D4134F521A7A11000DC99BD /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
