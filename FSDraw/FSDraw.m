@@ -10,12 +10,12 @@
 
 @implementation FSDraw
 
-+ (void)drawColorForView:(nonnull UIView *)view
-                sections:(NSInteger)sections
-               direction:(FSDrawDirection)direction
-                   color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                   ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
-    if (![view isKindOfClass:UIView.class]) {
++ (void)drawColorForLayer:(nonnull CALayer *)view
+                 sections:(NSInteger)sections
+                direction:(FSDrawDirection)direction
+                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio{
+    if (![view isKindOfClass:CALayer.class]) {
         return;
     }
     if (!configColor) {
@@ -52,12 +52,11 @@
         CGFloat ratio = configRatio(x);
         shapeLayer.strokeStart = offset;
         shapeLayer.strokeEnd = offset + ratio;
-        [view.layer addSublayer:shapeLayer];
+        [view addSublayer:shapeLayer];
         
         offset = shapeLayer.strokeEnd;
     }
     [path closePath];
 }
-
 
 @end

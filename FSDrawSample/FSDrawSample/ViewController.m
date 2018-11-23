@@ -22,7 +22,7 @@
     view.backgroundColor = UIColor.brownColor;
     [self.view addSubview:view];
     
-    [FSDraw drawColorForView:view sections:2 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
+    [FSDraw drawColorForLayer:view.layer sections:2 direction:FSDrawDirection_UpToBottom color:^UIColor * _Nonnull(NSInteger sectionIndex) {
         if (sectionIndex == 0) {
             return UIColor.redColor;
         }else{

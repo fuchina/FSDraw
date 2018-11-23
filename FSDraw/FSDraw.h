@@ -18,11 +18,11 @@ typedef NS_OPTIONS(NSUInteger, FSDrawDirection) {
 @interface FSDraw : NSObject
 
 // 让视图显示分段的各种颜色
-+ (void)drawColorForView:(nonnull UIView *)view
-                sections:(NSInteger)sections
-               direction:(FSDrawDirection)direction
-                   color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
-                   ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
++ (void)drawColorForLayer:(nonnull CALayer *)view
+                 sections:(NSInteger)sections
+                direction:(FSDrawDirection)direction
+                    color:(nonnull UIColor *(^)(NSInteger sectionIndex))configColor
+                    ratio:(CGFloat(^)(NSInteger sectionIndex))configRatio;
 
 @end
 
